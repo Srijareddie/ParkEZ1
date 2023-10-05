@@ -1,0 +1,88 @@
+version: "3.8"
+services: 
+  db:
+    container_name: postgresql_db
+    image: postgres
+    restart: always
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_PASSWORD=${DATABASE_PASSWORD}
+      - POSTGRES_USER=${DATABASE_USERNAME}
+      - POSTGRES_DB=${DATABASE_NAME}
+    volumes:
+      - local_pgdata:/var/lib/postgresql/data
+    networks:
+      - default
+
+  pgadmin:
+    container_name: pgadmin
+    image: dpage/pgadmin4
+    environment:
+      - PGADMIN_DEFAULT_EMAIL=${PGADMIN_EMAIL}
+      - PGADMIN_DEFAULT_PASSWORD=${PGADMIN_PASSWORD}
+      - PGADMIN_LISTEN_PORT:80
+    ports:
+      - 5050:80
+    networks:
+      - default
+    volumes:
+      - pgadmin-data:/var/lib/pgadmin
+    depends_on:
+      - db
+    
+  backend:
+    build:
+      context: ./backend
+    container_name: backend_c
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/backend
+      - /backend/venv
+    command: 
+      - uvicorn
+      - app.main:app
+      - --reload
+      - --host
+      - 0.0.0.0
+      - --port
+      - "8000"
+    env_file:
+      - .env
+    networks:
+      - default
+    links:
+      - db
+
+  frontend:
+    build: 
+      context: ./frontend
+    container_name: frontend_c
+    ports:
+      - "3000:3000"
+    volumes:
+      - ./frontend:/frontend
+      - /parkEz/frontend/node_modules
+    stdin_open: true
+    tty: true
+    networks:
+      - default
+    links:
+      - backend
+
+networks:
+  default:
+
+volumes:
+  local_pgdata:
+  pgadmin-data:
+      
+   
+  
+  
+    
+
+
+
+
