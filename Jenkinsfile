@@ -1,28 +1,46 @@
 pipeline
 {
 
-    agent any
+   agent {
+  label 'DevServer'
+}
+   tools{
+    nodejs 'node'
+   }
     stages
     {
-      stage('build')
-      {
-        steps
-        {
-        echo "This is build stage"
+      stage('Install and Build Frontend') {
+            steps {
+                dir('frontend') {  // Change directory to 'frontend'
+                    sh 'npm install'
+                    sh '''
+                        unset CI
+                        npm run build
+                    '''
+                }
+            }
         }
-      }
-      stage('test')
-      {
-        steps{
-            echo "This is test stage"
+
+        stage('Deploy Frontend') {
+            steps {
+                sh 'cp -r frontend/build/* /home/ec2-user/parkez/dev/frontend/'
+            }
         }
-      }
-        stage('deploy')
-         {
-            steps{
-                echo "This is stage deploy"
+
+        stage('Deploy Backend') {
+            steps {
+                sh 'cp -r backend/* /home/ec2-user/parkez/dev/backend/'
+            }
+        }
+
+    }
+
+    post {
+        success {
+            echo 'Build and deployment were successful!'
+        }
+        failure {
+            echo 'Build or deployment failed.'
             }
          }
-      
-    }
-}
+ }
