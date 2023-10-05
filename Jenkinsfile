@@ -1,54 +1,28 @@
-pipeline {
-    agent any  // This will use any available agent
+pipeline
+{
 
-    tools {
-        nodejs 'node'  // 'node' is the name you gave to the Node.js installation in Jenkins
-    }
-
-    stages {
-        stage('Checkout') {
-            steps {
-                checkout scm
+    agent any
+    stages
+    {
+      stage('build')
+      {
+        steps
+        {
+        echo "This is build stage"
+        }
+      }
+      stage('test')
+      {
+        steps{
+            echo "This is test stage"
+        }
+      }
+        stage('deploy')
+         {
+            steps{
+                echo "This is stage deploy"
             }
-        }
-
-        stage('Install and Build Frontend') {
-            steps {
-                dir('frontend') {  // Change directory to 'frontend'
-                    sh 'npm install'
-                    sh '''
-                        unset CI
-                        npm run build
-                    '''
-                }
-            }
-        }
-
-        stage('Deploy Frontend') {
-            steps {
-                sh 'cp -r frontend/build/* /home/tom/web/dev.gruevy.com/'
-            }
-        }
-
-        stage('Deploy Backend') {
-            steps {
-                sh 'cp -r backend/* /home/tom/web/backend_dev/'
-            }
-        }
-
-        stage('Restart Service') { 
-            steps {
-                sh 'sudo systemctl restart devback.service'
-            }
-        }
-    }
-
-    post {
-        success {
-            echo 'Build and deployment were successful!'
-        }
-        failure {
-            echo 'Build or deployment failed.'
-        }
+         }
+      
     }
 }
