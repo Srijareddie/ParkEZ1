@@ -1,0 +1,95 @@
+@import url('https://fonts.googleapis.com/css2?family=Inter&display=swap');
+*{
+  margin: 0px;
+  padding: 0px;
+  box-sizing: border-box;
+  font-family: 'Inter', sans-serif;
+  font-size: 16px;
+  outline: none;
+  border: none;
+}
+#root {
+  background-color: #ffffff;
+  display: grid;
+  grid-template-columns: repeat(12, 1fr);
+  grid-template-rows: auto 1fr;
+  min-height: 100vh;
+  overflow: hidden;
+}
+
+
+/* width */
+::-webkit-scrollbar {
+  width: 10px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  background: rgb(181, 181, 181);
+  border-radius: 10px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  -ms-border-radius: 10px;
+  -o-border-radius: 10px;
+}
+
+/* Handle on hover */
+::-webkit-scrollbar-thumb:hover {
+  background: rgb(103, 102, 102);
+}
+
+/* .quill > .ql-toolbar:first-child {
+  display: none !important;
+} */
+
+/* .ql-clean{
+  display: none !important;
+} */
+
+.flex{
+  display: flex;
+  align-items: center;
+}
+.flex-center{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.flex-between{
+  justify-content: space-between;
+}
+
+.flex-right{
+  justify-content: flex-end;
+}
+
+a{
+  text-decoration: none;
+  outline: none;
+}
+
+button{
+  outline: none;
+  border: none;
+  background: none;
+}
+
+.prm-btn{
+  color: #ffffff;
+  background-color: #0A0C8A;
+}
+
+.scd-btn{
+  color: #000000;
+  background-color:#ffffff;
+}
+
+label{
+  cursor: pointer;
+}
