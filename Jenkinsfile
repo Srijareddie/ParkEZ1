@@ -1,40 +1,41 @@
-pipeline
-{
-
-   agent {
-  label 'DevServer'
-}
-   tools{
-    nodejs 'node'
-   }
-    stages
-    {
-      stage('Install and Build Frontend') {
+    pipeline {
+    agent any
+    
+    stages {
+        stage('Checkout Frontend') {
             steps {
-                dir('frontend') {  // Change directory to 'frontend'
-                    sh 'npm install'
-                    sh '''
-                        unset CI
-                        npm run build
-                    '''
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Srijareddie/PE.git']]])
                 }
             }
         }
-
-        stage('Deploy Frontend') {
+        
+        stage('Build Frontend') {
             steps {
-                sh 'cp -r frontend/build/* /home/ec2-user/parkez/dev/frontend/'
+                sh 'cd frontend && npm install && npm run build'
             }
         }
-
-        stage('Deploy Backend') {
+        
+        stage('Checkout Backend') {
             steps {
-                sh 'cp -r backend/* /home/ec2-user/parkez/dev/backend/'
+                script {
+                    checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Srijareddie/PE.git']]])
+                }
             }
         }
-
+        
+        stage('Database Migration') {
+            steps {
+                sh 'python backend/manage.py migrate'  // Run database migrations
+            }
+        }
+        
+        stage('Database Seed') {
+            steps {
+                sh 'python backend/manage.py seed'  // Seed the database with initial data
+            }
+        }
     }
-
     post {
         success {
             echo 'Build and deployment were successful!'
