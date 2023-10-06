@@ -2,6 +2,19 @@
     agent any
     
     stages {
+        stage('Setup Node.js') {
+    steps {
+        sh 'export NVM_DIR="$HOME/.nvm" && [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"'
+        sh 'nvm install node'
+        sh 'npm install -g npm'  // Update npm
+    }
+}
+stage('Update npm') {
+    steps {
+        sh 'npm install -g npm@latest'
+    }
+}
+
         stage('Checkout Frontend') {
             steps {
                 script {
