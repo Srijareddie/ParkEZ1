@@ -29,7 +29,7 @@ pipeline {
         stage('Open Application') {
             steps {
                 script {
-                    sh 'xdg-open http://3.145.189.4:8081'
+                    sh 'xdg-open http://3.145.189.4:3000'
                 }
             }
         }
