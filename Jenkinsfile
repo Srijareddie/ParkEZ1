@@ -1,39 +1,41 @@
-pipeline
-{
+pipeline {
+    agent any
 
-   agent {
-  label 'DevServer'
-}
-   tools{
-    nodejs 'node'
-   }
-    stages
-    {
-      stage('Install and Build Frontend') {
+    stages {
+        stage('Checkout') {
             steps {
-                dir('frontend') {  // Change directory to 'frontend'
-                    sh 'npm install'
-                    sh '''
-                        unset CI
-                        npm run build
-                    '''
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/yourusername/yourrepository.git']]])
+            }
+        }
+
+        stage('Build Frontend') {
+            steps {
+                sh 'cd frontend && npm install && npm run build'
+            }
+        }
+
+        stage('Build and Deploy Backend') {
+            steps {
+                sh 'cd backend && pip install -r requirements.txt && python main.py'
+            }
+        }
+
+        stage('Database Migration') {
+            steps {
+                sh 'cd backend && alembic upgrade head'
+            }
+        }
+
+        stage('Open Application') {
+            steps {
+                script {
+                    sh 'xdg-open http://your-ec2-instance-ip:your-frontend-port'
                 }
             }
         }
-
-        stage('Deploy Frontend') {
-            steps {
-                sh 'cp -r frontend/build/* /home/ec2-user/parkez/dev/frontend/'
-            }
-        }
-
-        stage('Deploy Backend') {
-            steps {
-                sh 'cp -r backend/* /home/ec2-user/parkez/dev/backend/'
-            }
-        }
-
     }
+}
+
 
     post {
         success {
