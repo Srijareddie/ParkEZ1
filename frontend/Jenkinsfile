@@ -4,7 +4,7 @@ pipeline {
     stages {
         stage('Checkout') {
             steps {
-                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/yourusername/yourrepository.git']]])
+                checkout([$class: 'GitSCM', branches: [[name: 'main']], userRemoteConfigs: [[url: 'https://github.com/Srijareddie/PE.git']]])
             }
         }
 
@@ -29,7 +29,7 @@ pipeline {
         stage('Open Application') {
             steps {
                 script {
-                    sh 'xdg-open http://your-ec2-instance-ip:your-frontend-port'
+                    sh 'xdg-open http://3.145.189.4:3000'
                 }
             }
         }
