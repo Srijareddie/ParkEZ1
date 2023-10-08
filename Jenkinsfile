@@ -35,15 +35,3 @@ pipeline {
         }
     }
 }
-
-
-    post {
-        success {
-            echo 'Build and deployment were successful!'
-        }
-        failure {
-            echo 'Build or deployment failed.'
-            }
-         }
- }
-
