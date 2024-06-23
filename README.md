@@ -2,14 +2,6 @@
 
 ParkEZ is a cutting-edge parking management solution designed to alleviate the challenges faced by both drivers and business owners. By harnessing technology, ParkEZ enhances the parking experience through real-time occupancy data and efficient resource management.
 
-<video width="320" height="240" controls>
-  <source src="path_to_your_video.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
-
-
-## Technical Achievements
-
 ### CI/CD Pipeline with Jenkins
 - Orchestrated a robust CI/CD pipeline using Jenkins.
 - Integrated ReactJS for the frontend, FastAPI for backend logic, and PostgreSQL for data management.
